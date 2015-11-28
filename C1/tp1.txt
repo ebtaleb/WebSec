@@ -1,0 +1,174 @@
+1 -
+
+http://localhost/files/authentication.php
+
+
+GET /files/authentication.php HTTP/1.1
+Host: localhost
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+Referer: http://localhost/files/
+Connection: keep-alive
+Authorization: Basic aHFocTpocWhx
+
+base64 decoding : one obtains user:password (here hqhq:hqhq)
+
+2-
+
+inside the DOM tree, we can set the value of the price input in the page from
+
+<input name="price" value="20.00" type="HIDDEN">
+
+to
+
+<input value="1.00" name="price" type="HIDDEN">
+
+How an attacker (a client using the application) can now buy articles by a
+cheaper price than the one set by price.php?
+
+> You could modify the DOM tree then execute price.php.
+> You could overwrite the price cookie inside the HTTP header's request with a value of your choice.
+
+If price.php adds a hash to the price in the cookie, how an attacker can buy
+articles by a cheaper price than the one set by price.php?
+
+>
+
+3-
+
+Enclose the script reference inside an iframe tag.
+
+
+4 -
+
+The 2nd service can delete the cookie set by the first, as the cookies are set by the same domain (here localhost).
+Therefore, all cookies set by localhost are within its scope and can be modified.
+
+A cookie can be deleted on the server side with PHP by setting its expiration date in the past. 
+This then triggers the browser cookie removal mechanism (see PHP setcookie man)
+
+JavaScript cannot remove cookies that have the HttpOnly flag set.
+
+5 - The application suffers from a XSS vulnerability.
+
+It can be prevented by encoding and removing HTML tag characters from the input. If the client cannot be trusted with reliable input, it must be 
+done server-side instead.
+
+6 - The code here is inserted as a HTTP GET parameter, thus it is not affected by HTML character encoding and escaping.
+To prevent this, one should perform URL escaping and encoding before accessing the URL.
+
+7 -
+
+Insert the following code in the gadget:
+
+csrf_img = document.createElement("img");
+csrf_img.setAttribute("src", "http://localhost/ex7/unintendedaction?hahaevilrequest");
+document.getElementById("answerdiv").appendnode(csrf_img);
+
+the img and script tags not being affected by SOP, it is possible to insert tags with malicious URLs so undesirable requests can be done while
+usurping one's identity
+
+the attack can be prevented if the gadget is inside an iframe, as the gadget attacker code comes from a different domain, the SOP prevents
+that code from being executed
+
+the attack can take place even if the cookie is httponly, because all cookies will be submitted with the request, even the "secure" ones
+
+implementation of the tokens can be found at simple2.php and xsrf2.php
+
+8 -
+
+
+9 -
+
+
+10 -
+
++ adapi.js has been verified and cannot access window directly, however it
+has access to function integrator whenever it is available
+
+Version 1
+
+obtain a pointer to window, no access to secret
+
+Version 2
+
+obtain a pointer to window, access to secret via integrator().secret
+
+Version 3
+
+cannot obtain a pointer to window, nor access via window
+
+Version 4
+
+obtain a pointer to window, no access to secret
+
++ remove the assumption that code for adapi.js cannot access window directly
+
+Version 1
+
+no change
+
+Version 2
+
+can access window and secret both via window as a global variable and via integrator().secret
+
+Version 3
+
+can access window and secret (when the anonymous funtion was called, secret was set as a global variable)
+
+Version 4
+ no change
+
+Remark : Note that the value of secret can still be "read" by the attacker using integrator.toString().
+
+11 -
+
+for attackercode = "document.writeln(secret)" (or even an AJAX request):
+- in the first version of the code, it is possible to read the value of secret
+- but not in the second version of the code
+
+
+12 -
+
+first implementation :
+
+badObj = {toString: function () {return "secretproperty"}}
+Object { toString: badObj.toString() }
+
+obj = {"publicproperty" : 0, "secretproperty" : 42}
+Object { publicproperty: 0, secretproperty: 42 }
+
+lookup1(obj, "publicproperty")
+0
+
+lookup1(obj, "secretproperty")
+"unsafe!"
+
+lookup1(obj, badObj)
+42
+
+the implicit type coercion of badObj to a string via the redefinition of the toString method makes it possible to access the secret property's value
+
+
+second implementation:
+
+badObj = {toString: function () {return "secretproperty"}}
+Object { toString: badObj.toString() }
+
+obj = {"publicproperty" : 0, "secretproperty" : 42}
+Object { publicproperty: 0, secretproperty: 42 }
+
+lookup2(obj, badObj)
+0
+
+lookup2(obj, "secretproperty")
+0
+
+lookup2(obj, "publicproperty")
+0
+
+here, regardless of type casting, secretproperty's value cannot be accessed
+
