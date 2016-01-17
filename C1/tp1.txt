@@ -80,9 +80,26 @@ implementation of the tokens can be found at simple2.php and xsrf2.php
 
 8 -
 
+secret is a variable local to the anonymous function called, in both cases, it cannot be accessed by b.js
+
+when b.js is run inside a script tag, no SOP applies here, and thus can access the parent DOM and the window object
+however if b.js is in an iframe, the SOP applies, and b.js cannot access the parent dom, as their domains are different
+
 
 9 -
 
+XMLHttpRequest = function(){alert('hacked!' );} 
+
+the following code overwrite the XMLHttpRequest function, used for AJAX calls
+if XMLHttpRequest is compromised, an attacker could leak information about the victim, steal his cookies, open to CSRF vulnerabilities
+
+one way to prevent this: put the function inside an object, then freeze it and make all calls to XMLHttpRequest by using that object
+
+var x = { f : XMLHttpRequest };
+Object.freeze(x);
+
+x.f = ..... // no change
+XMLHttpRequest = ... // no change
 
 10 -
 

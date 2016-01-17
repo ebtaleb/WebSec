@@ -1,0 +1,28 @@
+> CSRF tokens, sanitization of input to prevent XSS vulnerabilities were added to the application.
+> I tried to protect the REST API by adding a Digest authentication scheme beforehand, but the proper settings in a Spring XML
+> configuration file seems to interfere with the authentication scheme of the web application itself.
+
+* Implement a solution to protect the client from being tracked. Explain why the tracking is not possible anymore.
+
+* Propose an existing solution to the client (such as changing his browser preferences, installing browser
+extension) and explain how it protects the client from being tracked.
+
+> Use an adblocker extension (like AdBlock Plus) and add the incriminating domain to its blocklist. I recommend uBlock Origin.
+> Web tracking techniques make use of browser caching capabilities.
+You can configure your browser to clear disk cache on exit to mitigate tracking (it can still happen during a single session).
+Or you can add the following HTTP headers to every request you do using the FireFox Modify Headers:
+Pragma: no-cache, no-store
+Cache-Control: no-cache, no-store
+so that web content get fetched at every single request, it makes loading slower, but mitigate tracking.
+
+
+* Implement a protection from cookie stealing in your project. Check whether the advertisement code
+* can steal the cookies and explain how the protection makes the cookie stealing impossible
+
+> Scripts can only access properties associated with documents from the same origin {protocol, host, port}
+> If the ad is loaded in a iframe, the DOM Same Origin Policy applies.
+> A webpage inside an iframe/frame is not allowed to modify or access the DOM of its parent.
+
+> The app makes use of the HttpOnly flag in HTTP headers to help mitigating the risk of client side script accessing the protected cookie
+thus the cookie cannot be accessed through client side script, but only if the browser support Http Only cookies
+else, a traditional cookie will be created

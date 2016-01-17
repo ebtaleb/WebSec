@@ -1,0 +1,13 @@
+<script src="http://tracker.com/t.js"></script> :
+- 1st party cookie
+eid is read (from origin domain - i.e example.com), then sent to tracker.com
+
+<script src="http://another.com/a.js"></script> :
+- 1st party cookie
+eid is read (from the current webpage origin domain - i.e example.com), then sent to tracker.com
+
+<iframe src = "http://another.com/a.html"></iframe> :
+- 3rd party cookie
+in a.html - read the cookie (another.com: aid = '789')
+sop applies, read cookie from iframe's domain, i.e another.com
+sent to tracker.com

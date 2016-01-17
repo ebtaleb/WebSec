@@ -1,0 +1,39 @@
+IDF Eventer can be accessed at the following URL:
+
+http://kingofidols.net:8080/app/home
+
+Prior registration is needed to access it. If you register for the first time, automatic login ensues.
+
+* How to trigger an XSS vulnerability on IDF Eventer
+
+- Go to the event registration page (Créer nouveau évènement)
+- insert <script>alert("evil code")</script> into any text field that is not a Datepicker field
+- the code will be executed on the user home page or when visiting the event page
+
+Why is that attack possible?
+- There is no input sanitation and validation performed on either side (client and server).
+Thus, all code is inserted verbatim into the database and retrieved when needed.
+
+
+* How to trigger a CSRF vulnerability on IDF Eventer
+
+It is not exacty a CSRF vuln per say, as form content is submitted via AJAX to the REST API.
+
+- Go to the event registration page
+- Craft a script/img tag with payload js file (see test.js), and put it in a textfield using the xss vulnerability
+- when the page is loaded by the victim, it will create unbeknown to the victim an event to his name where he would offer free food and drinks
+
+In both cases, the url cannot be too large due to constraints on the field size of the data in the database:
+  `title` VARCHAR( 60 ) NOT NULL,
+  `descr` VARCHAR( 140 ) NOT NULL,
+  `event_type` VARCHAR( 15 ) NOT NULL,
+  `address` VARCHAR( 80 ) NOT NULL,
+
+Whole scripts cannot be inserted successfully in the textfields, so they must be put in javascript files and uploaded to a server.
+
+Why is that attack possible?
+
+- It leverages the XSS vulnerability mentioned above.
+- The REST API is unprotected, and does not require authentication.
+
+

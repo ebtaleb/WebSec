@@ -1,0 +1,31 @@
+
+    <!--here, we are in kingofidols.net domain origin-->
+    <!--set third-party cookies-->
+    <script>
+        document.cookie='id=42';
+    </script>
+
+    <!--read third-party cookies-->
+    <script>
+        var x = document.cookie;
+        var cookieValue = x.replace(/(?:(?:^|.*;\s*)id\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        var url = 'http://kingofidols.net/track?tid=' + cookieValue;
+        var url2 = 'http://tracker.com/track?tid=' + cookieValue;
+        document.write('<img src=' + url + '/>');
+        document.write('<img src=' + url2 + '/>');
+    </script>
+
+    <!--set third-party HTML5 localStorage-->
+    <!--Same-origin-policy applies to HTML5 localStorage-->
+    <script>
+        localStorage.setItem('id', 42);
+    </script>
+
+    <!--read third-party HTML5 localStorage-->
+    <script>
+        var x = localStorage.getItem('id');
+        var url = 'http://kingofidols.net/track?tid=' + x;
+        var url2 = 'http://tracker.com/track?tid=' + x;
+        document.write('<img src=' + url + '/>');
+        document.write('<img src=' + url2 + '/>');
+    </script>

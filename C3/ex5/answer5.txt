@@ -1,0 +1,50 @@
+Etag header is a content caching mechanism
+allows cookieless tracking
+
+ETags cached by the browser, and returned with subsequent requests for the same resource, 
+the server can just repeat any ETag received from the browser to ensure 
+an assigned ETag persists indefinitely
+
+
+1st time request:
+
+Host: localhost
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: keep-alive
+
+1st time response:
+
+Connection: Keep-Alive
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 08 Dec 2015 22:39:06 GMT
+Etag: 9dcfae22b5d033c7b9
+Keep-Alive: timeout=5, max=100
+Server: Apache/2.4.12 (Ubuntu)
+
+
+Next request:
+
+Host: localhost
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: keep-alive
+If-None-Match: 9dcfae22b5d033c7b9
+
+Response:
+
+Connection: Keep-Alive
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+Date: Tue, 08 Dec 2015 22:40:09 GMT
+Etag: 9dcfae22b5d033c7b9
+Keep-Alive: timeout=5, max=100
+Server: Apache/2.4.12 (Ubuntu)
+

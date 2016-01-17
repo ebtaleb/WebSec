@@ -1,0 +1,3 @@
+Is such tracking first-party or third-party? Does it support tracking over multiple sites
+(for example if respawn.js script was present on the other site at another.com) or only on site
+example.com?

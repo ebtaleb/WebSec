@@ -1,0 +1,21 @@
+Host: kingofidols.net
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Cookie: id=42
+DNT: 1
+Connection: keep-alive
+If-Modified-Since: Tue, 08 Dec 2015 21:21:19 GMT
+If-None-Match: "566749cf-333"
+
+> Automatically sends third-party cookies in an HTTP header whenever they are present
+in the browser : yes, it does
+
+> Does your web browser implement the blocking of third-party cookies properly?
+(firefox), yes
+
+> Does it also disable the usage of the third-party HTML5 localStorage as expected?
+No
+localStorage stores data with no expiration date, it will not be deleted when the browser is closed
+to disable it, set dom.storage.enabled to false in about:config.

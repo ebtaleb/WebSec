@@ -1,0 +1,21 @@
+if(typeof(window.google_render_ad)=="undefined") 
+{ 
+    //They're blocking ads, do something else.
+}
+
+
+navigator.plugins
+
+In general, a web site cannot tell what addons you have.
+
+There are two ways that a web site can tell things about a web browser.
+
+    HTTP headers, such as User-Agent and Cookie, that the browser sends with the request.
+    Javascript code that the browser runs.
+
+The HTTP headers do not include information about your addons.
+
+
+Javascript code that runs in your browser may detect the presence of some add-ons,
+if the Javascript specifically checks for something that indicates the presence of a particular add-on. 
+
